@@ -1,12 +1,21 @@
+from django.http import JsonResponse
 from rest_framework.generics import GenericAPIView
-from rest_framework.response import Response
 
-from api.serializers import OnlyHtmlSerializer
+from api.encrypt import CodeEncrypt
+from api.serializers import HtmlCssSerializer
 
 
-class OnlyHtmlViewSet(GenericAPIView):
+class HtmlCssViewSet(GenericAPIView):
     def get_serializer(self, *args, **kwargs):
-        return OnlyHtmlSerializer(*args, **kwargs)
+        return HtmlCssSerializer(*args, **kwargs)
 
-    def get(self, request, *args, **kwargs):
-        return Response({'status': 'success'})
+    def post(self, request, *args, **kwargs):
+        html = request.POST.get('html_code')
+        css = request.POST.get('css_code')
+        encrypt_html, encrypt_css = CodeEncrypt(html_code=html, css_code=css).encrypt()
+        return JsonResponse(
+            {
+                'encrypt_html': encrypt_html,
+                'encrypt_css': encrypt_css,
+            }
+        )
