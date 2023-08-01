@@ -24,7 +24,9 @@ class CodeEncrypt:
         if isinstance(css_code, list):
             css_code = '\n'.join(css_code)
         if html_code.find('<style>') == -1:
-            self.code = f'<html><body><style>{css_code}</style></body></html>'
+            html_code = html_code.split('<body>')
+            html_code[1] = f'<style>{css_code}</style>' + html_code[1]
+            self.code = '<body>'.join(html_code)
         else:
             code_list = html_code.split('<style>')
             code_list.insert(1, css_code)
