@@ -6,6 +6,10 @@ from api.serializers import HtmlCssSerializer
 
 
 class HtmlCssViewSet(GenericAPIView):
+    """
+    Позволяет изменить классы в HTML/CSS.
+    Не влияет на работоспособность получившейся верстки.
+    """
     def get_serializer(self, *args, **kwargs):
         return HtmlCssSerializer(*args, **kwargs)
 
